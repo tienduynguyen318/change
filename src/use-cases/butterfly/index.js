@@ -1,6 +1,6 @@
 'use strict';
 
-const butterflyDb = require('../../persistedstorage/buttefly-db');
+const butterflyDb = require('../../repository/buttefly-db');
 const makeButterfly = require('../../models/butterfly');
 
 const findButterflyById = (id) => {

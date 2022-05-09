@@ -1,18 +1,37 @@
 'use strict';
 
-const userDb = require('../../persistedstorage/user-db');
 const makeUser = require('../../models/user');
 
-const findUserById = (id) => {
-  return userDb.getUserById(id);
-};
+class UserService {
+  constructor(UserRepository) {
+    this.userRepository = UserRepository;
+  }
 
-const addUser = (userData) => {
-  const newUser = makeUser(userData);
-  return userDb.createUser(newUser);
-};
+  async addUser(userData) {
+    const newUser = makeUser(userData);
+    return this.userRepository.createUser(newUser);
+  }
 
-module.exports = {
-  findUserById,
-  addUser
-};
+  findUserById(id) {
+    return this.userRepository.getUserById(id);
+  }
+}
+
+module.exports = UserService;
+
+// const userDb = require('../../repository/user-db');
+// const makeUser = require('../../models/user');
+
+// const findUserById = (id) => {
+//   return userDb.getUserById(id);
+// };
+
+// const addUser = (userData) => {
+//   const newUser = makeUser(userData);
+//   return userDb.createUser(newUser);
+// };
+
+// module.exports = {
+//   findUserById,
+//   addUser
+// };
