@@ -4,10 +4,14 @@ const { db } = require('../index');
 const connection = db();
 
 const getUserById = (id) => {
-  console.log(db);
-  return connection.get('users').find({ id:id }).value();
+  return connection.get('users').find({ id: id }).value();
+};
+
+const createUser = (userData) => {
+  return connection.get('users').push(userData).write();
 };
 
 module.exports = {
-  getUserById
+  getUserById,
+  createUser
 };

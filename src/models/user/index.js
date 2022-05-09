@@ -1,10 +1,8 @@
 'use strict';
 
-const buildMakeUser = require('./user');
-const userSchema = require('./user-schema');
-// TODU
-const userValidator = require('../validator')(userSchema);
+const buildUser = require('./user');
+const userModelValidator = require('./validator');
 
-const makeUser = buildMakeUser(userValidator);
+const makeUser = buildUser(userModelValidator);
 
 module.exports = makeUser;

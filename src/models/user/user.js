@@ -1,18 +1,19 @@
 'use strict';
 
-const buildMakeTeacher = function (teacherValidator) {
+const shortid = require('shortid');
+
+const buildUser = function (userModelValidator) {
   return ({
-    id,
     username
   } = {}) => {
-    const { error } = teacherValidator({ id, username  });
+    const error = userModelValidator({ username });
     if (error) throw new Error(error);
 
     return {
-      getId: () => id,
-      getUsername: () => username
+      id : shortid.generate(),
+      username: username
     };
   };
 };
 
-module.exports = buildMakeTeacher;
+module.exports = buildUser;
