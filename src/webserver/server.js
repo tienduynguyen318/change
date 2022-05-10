@@ -11,8 +11,6 @@ app.use(bodyParser.json());
 
 app.use(routes);
 
-// === BOILERPLATE ===
-// Catch and send error messages
 app.use((err, req, res, next) => {
   if (err) {
     console.error(err.message);
@@ -24,7 +22,6 @@ app.use((err, req, res, next) => {
       message: err.message
     });
   }
-
   next();
 });
 
@@ -34,7 +31,6 @@ app.use((req, res) => {
     status: 'Page does not exist'
   });
 });
-
 
 const PORT = 8000;
 

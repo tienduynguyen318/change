@@ -1,15 +1,16 @@
 'use strict';
 
 const shortid = require('shortid');
+const { ValidationError } = require('../error/error');
 
-const buildButterfly = function (butterflyValidator) {
+const buildButterfly = function (butterflyModelValidator) {
   return ({
     commonName,
     species,
     article
   } = {}) => {
-    const error = butterflyValidator({ commonName, species, article });
-    if (error) throw new Error(error);
+    const error = butterflyModelValidator({ commonName, species, article });
+    if (error) throw new ValidationError(error);
 
     return {
       id: shortid.generate(),

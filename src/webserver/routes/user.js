@@ -1,52 +1,36 @@
 'use strict';
 
-const { validateUser  } = require('../../validators');
+// const { type } = require('express/lib/response');
+const { userSchemaValidator } = require('./validator');
+const { NotFoundError  } = require('../../models/error/error');
 
 class UserController {
   constructor(userService) {
     this.userService = userService;
-    console.log('88', userService);
-    console.log('89', this.userService);
   }
 
   show(req, res) {
     const { id } = req.params;
-    console.log('133', this.userService);
-    const data = this.userService.findUserById(id);
+    let data = undefined;
+    try {
+      data = this.userService.findUserById(id);
+    } catch (error) {
+      if (error instanceof (NotFoundError)) {
+        return res.status(404).json({ message: error.message });
+      }
+    }
     res.json(data);
   }
 
   create(req, res) {
     try {
-      validateUser(req.body);
+      userSchemaValidator(req.body);
     } catch (error) {
       return res.status(400).json({ error: 'Invalid request body' });
     }
-    const data = this.userService.addUser(req.body);
-    res.json(data);
+    const data = this.userService.createUser(req.body);
+    res.status(201).json(data);
   }
 }
 
 module.exports = UserController;
-
-// const userUseCases = require('../../use-cases/user');
-// const { validateUser  } = require('../../validators');
-
-// const users = module.exports = {};
-
-// users.show = (req, res) => {
-//   const { id } = req.params;
-//   const data = userUseCases.findUserById(id);
-//   res.json(data);
-// };
-
-// users.create = (req, res) => {
-//   // TODU
-//   try {
-//     validateUser(req.body);
-//   } catch (error) {
-//     return res.status(400).json({ error: 'Invalid request body' });
-//   }
-//   const data = userUseCases.addUser(req.body);
-//   res.json(data);
-// };

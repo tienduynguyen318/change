@@ -3,7 +3,7 @@
 const v = require('@mapbox/fusspot');
 
 function validateUsername(value) {
-  if (typeof value !== 'string' || value.length < 8) {
+  if (typeof value !== 'string') {
     return ({ path }) =>
       `The input value '${value}' at ${path.join('.')} is not a valid username.`;
   }

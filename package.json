@@ -26,7 +26,8 @@
     "express": "^4.18.1",
     "joi": "^17.6.0",
     "lowdb": "^1.0.0",
-    "shortid": "^2.2.14"
+    "shortid": "^2.2.14",
+    "sinon": "^14.0.0"
   },
   "devDependencies": {
     "@mapbox/eslint-config-mapbox": "^2.0.1",
@@ -45,7 +46,25 @@
     "extends": "@mapbox/eslint-config-mapbox",
     "overrides": [
       {
-        "files": "test/**",
+        "files": "src/repository/test/**",
+        "env": {
+          "jest": true
+        }
+      },
+      {
+        "files": "src/use-cases/test/**",
+        "env": {
+          "jest": true
+        }
+      },
+      {
+        "files": "src/models/test/**",
+        "env": {
+          "jest": true
+        }
+      },
+      {
+        "files": "src/webserver/test/**",
         "env": {
           "jest": true
         }
