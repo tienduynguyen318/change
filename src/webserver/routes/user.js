@@ -1,23 +1,35 @@
 'use strict';
 
-const userUseCases = require('../../use-cases/user');
-const { validateUser  } = require('../../validators');
+const { userSchemaValidator } = require('./validator');
+const { NotFoundError  } = require('../../models/error/error');
 
-const users = module.exports = {};
-
-users.show = (req, res) => {
-  const { id } = req.params;
-  const data = userUseCases.findUserById(id);
-  res.json(data);
-};
-
-users.create = (req, res) => {
-  // TODU
-  try {
-    validateUser(req.body);
-  } catch (error) {
-    return res.status(400).json({ error: 'Invalid request body' });
+class UserController {
+  constructor(userService) {
+    this.userService = userService;
   }
-  const data = userUseCases.addUser(req.body);
-  res.json(data);
-};
+
+  show(req, res) {
+    const { id } = req.params;
+    let data = undefined;
+    try {
+      data = this.userService.findUserById(id);
+    } catch (error) {
+      if (error instanceof (NotFoundError)) {
+        return res.status(404).json({ message: error.message });
+      }
+    }
+    res.json(data);
+  }
+
+  create(req, res) {
+    try {
+      userSchemaValidator(req.body);
+    } catch (error) {
+      return res.status(400).json({ error: 'Invalid request body' });
+    }
+    const data = this.userService.createUser(req.body);
+    res.status(201).json(data);
+  }
+}
+
+module.exports = UserController;

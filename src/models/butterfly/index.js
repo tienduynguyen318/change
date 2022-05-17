@@ -1,8 +1,8 @@
 'use strict';
 
 const buildButterfly = require('./butterfly');
-const butterflyValidator = require('./validator');
+const butterflyModelValidator = require('./validator');
 
-const makeButterfly = buildButterfly(butterflyValidator);
+const makeButterfly = buildButterfly(butterflyModelValidator);
 
 module.exports = makeButterfly;
