@@ -11,8 +11,6 @@ const buildRating = function (ratingModelValidator) {
   } = {}) => {
     const error = ratingModelValidator({ userId, butterflyId, rating });
     if (error) throw new ValidationError(error);
-    // const error = ratingModelValidator({ userId, butterflyId, rating });
-    // if (error) throw new ValidationError(error);
     return {
       id: shortid.generate(),
       userId: userId,

@@ -7,6 +7,8 @@ const UserRepository = require('../../repository/user');
 const shortid = require('shortid');
 const ButterflyService = require('../butterfly');
 const ButterflyRepository = require('../../repository/butterfly');
+const RatingService = require('../rating');
+const RatingRepository = require('../../repository/rating');
 
 describe('UserService', () => {
   describe('createUser', () => {
@@ -82,8 +84,8 @@ describe('ButterflyService', () => {
       expect(butterfly.article).to.equal(stubValue.article);
     });
   });
-  describe('getUserById', () => {
-    it('should return a user that matches the provided id', () => {
+  describe('getButterflyById', () => {
+    it('should return a butterfly that matches the provided id', () => {
       const stubValue = {
         id: shortid.generate(),
         commonName: 'Brimstone',
@@ -105,4 +107,77 @@ describe('ButterflyService', () => {
   });
 });
 
-// TODU add test for rating
+describe('RatingService', () => {
+  describe('createRating', () => {
+    it('should create new rating', async () => {
+      const ratingStubValue = {
+        userId: 'mnp',
+        butterflyId: 'flc',
+        rating: 4
+      };
+      const userStubValue = {
+        id: 'mnp',
+        username: 'abc'
+      };
+      const butterflyStubValue = {
+        id: 'flc',
+        commonName: 'Brimstone',
+        species: 'Gonepteryx rhamni',
+        article: 'https://en.wikipedia.org/wiki/Gonepteryx_rhamni'
+      };
+
+      const butterflyRepo = new ButterflyRepository();
+      sinon.stub(butterflyRepo, 'getButteflyById').returns(butterflyStubValue);
+      const butterflyService = new ButterflyService(butterflyRepo);
+      const userRepo = new UserRepository();
+      sinon.stub(userRepo, 'getUserById').returns(userStubValue);
+      const userService = new UserService(userRepo);
+      const ratingRepo = new RatingRepository();
+      const ratingStub = sinon.stub(ratingRepo, 'addRating').returns(ratingStubValue);
+
+      const ratingService = new RatingService(ratingRepo, userService, butterflyService);
+      const rating = ratingService.createRating(ratingStubValue);
+
+      expect(ratingStub.calledOnce).to.be.true;
+      expect(rating.userId).to.equal(ratingStubValue.userId);
+      expect(rating.butterflyId).to.equal(ratingStubValue.butterflyId);
+      expect(rating.rating).to.equal(ratingStubValue.rating);
+    });
+  });
+  describe('findRatingByUserId', () => {
+    it('should return a rating that matches the provided user id', () => {
+      const ratingStubValue = {
+        userId: 'mnp',
+        butterflyId: 'flc',
+        rating: 4
+      };
+      const userStubValue = {
+        id: 'mnp',
+        username: 'abc'
+      };
+      const butterflyStubValue = {
+        id: 'flc',
+        commonName: 'Brimstone',
+        species: 'Gonepteryx rhamni',
+        article: 'https://en.wikipedia.org/wiki/Gonepteryx_rhamni'
+      };
+      const butterflyRepo = new ButterflyRepository();
+      sinon.stub(butterflyRepo, 'getButteflyById').returns(butterflyStubValue);
+      const butterflyService = new ButterflyService(butterflyRepo);
+      const userRepo = new UserRepository();
+      sinon.stub(userRepo, 'getUserById').returns(userStubValue);
+      const userService = new UserService(userRepo);
+      const ratingRepo = new RatingRepository();
+      const ratingStub = sinon.stub(ratingRepo, 'getRatingsByUserID').returns(ratingStubValue);
+
+      const ratingService = new RatingService(ratingRepo, userService, butterflyService);
+      const rating = ratingService.findRatingByUserId('mnp');
+
+      expect(ratingStub.calledOnce).to.be.true;
+      expect(rating.userId).to.equal(ratingStubValue.userId);
+      expect(rating.butterflyId).to.equal(ratingStubValue.butterflyId);
+      expect(rating.rating).to.equal(ratingStubValue.rating);
+    });
+  });
+});
+

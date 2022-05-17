@@ -10,12 +10,11 @@ class RatingService {
     this.butterflyService = ButterflyService;
   }
 
-  // TODU
   createRating(data) {
     const user = this.userService.findUserById(data.userId);
     const butterfly = this.butterflyService.findButterflyById(data.butterflyId);
-    const newRating = makeRating(user.id, butterfly.id, data.rating);
-    console.log('18', newRating);
+    const makeRatingObject = { userId: user.id, butterflyId: butterfly.id, rating: data.rating };
+    const newRating = makeRating(makeRatingObject);
     try {
       this.ratingRepository.addRating(newRating);
     } catch (error) {
@@ -24,10 +23,8 @@ class RatingService {
     return newRating;
   }
 
-  // TODU
   findRatingByUserId(userId) {
     const ratings = this.ratingRepository.getRatingsByUserID(userId);
-    console.log('29', ratings);
     if (ratings.length === 0) {
       throw new NotFoundError(`Not found object rating with userId: ${userId}`);
     }

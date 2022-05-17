@@ -1,11 +1,11 @@
 'use strict';
 
 const UserRepository = require('../../repository/user');
-const UserService = require('../../use-cases/user');
+const UserService = require('../../services/user');
 const ButterflyRepository = require('../../repository/butterfly');
-const ButterflyService = require('../../use-cases/butterfly');
+const ButterflyService = require('../../services/butterfly');
 const RatingRepository = require('../../repository/rating');
-const RatingService = require('../../use-cases/rating');
+const RatingService = require('../../services/rating');
 
 const userRepository = new UserRepository();
 const userService = new UserService(userRepository);

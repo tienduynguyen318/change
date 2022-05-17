@@ -8,7 +8,6 @@ class RatingController {
     this.ratingService = ratingService;
   }
 
-  // TODU
   show(req, res) {
     const { id } = req.params;
     let data = undefined;
@@ -22,7 +21,6 @@ class RatingController {
     res.json(data);
   }
 
-  // TODU
   create(req, res) {
     try {
       ratingSchemaValidator(req.body);
@@ -31,7 +29,6 @@ class RatingController {
     }
     let data = undefined;
     try {
-      console.log('34', req.body);
       data = this.ratingService.createRating(req.body);
     } catch (error) {
       if (error instanceof (NotFoundError)) {

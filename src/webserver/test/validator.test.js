@@ -1,9 +1,9 @@
 'use strict';
 
-const { butterflySchemaValidator, userSchemaValidator } = require('../routes/validator');
+const { butterflySchemaValidator, userSchemaValidator, ratingSchemaValidator } = require('../routes/validator');
 
 
-describe('validateButterfly', () => {
+describe('validate create butterfly schema', () => {
   const validButterfly = {
     commonName: 'Butterfly Name',
     species: 'Species name',
@@ -36,7 +36,7 @@ describe('validateButterfly', () => {
   });
 });
 
-describe('validateUser', () => {
+describe('validate create user schema', () => {
   const validUser = {
     username: 'test-user'
   };
@@ -66,5 +66,34 @@ describe('validateUser', () => {
   });
 });
 
+describe('validate create rating schema', () => {
+  const validRating = {
+    userId: 'abc',
+    butterflyId: 'xyz',
+    rating: 4
+  };
 
-// TODU add test for rating
+  it('is ok for a valid user', () => {
+    const result = ratingSchemaValidator(validRating);
+    expect(result).toBe(undefined);
+  });
+
+  it('throws an error when invalid', () => {
+    expect(() => {
+      ratingSchemaValidator({});
+    }).toThrow('The following properties have invalid values:');
+
+    expect(() => {
+      ratingSchemaValidator({
+        extra: 'field',
+        ...validRating
+      });
+    }).toThrow('The following keys are invalid: extra');
+
+    expect(() => {
+      ratingSchemaValidator({
+        rating: 6
+      });
+    }).toThrow('The following properties have invalid values:');
+  });
+});

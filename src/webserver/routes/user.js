@@ -1,6 +1,5 @@
 'use strict';
 
-// const { type } = require('express/lib/response');
 const { userSchemaValidator } = require('./validator');
 const { NotFoundError  } = require('../../models/error/error');
 

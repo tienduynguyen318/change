@@ -52,7 +52,7 @@
         }
       },
       {
-        "files": "src/use-cases/test/**",
+        "files": "src/services/test/**",
         "env": {
           "jest": true
         }
